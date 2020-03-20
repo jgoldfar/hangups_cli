@@ -92,8 +92,7 @@ class Cli(object):
         elif to[0] == "user":
             raise NotImplementedError("Send to user")
 
-    @asyncio.coroutine
-    def save_conversations_list(self):
+    async def save_conversations_list(self):
         """Save the list of conversations, useful for autocomplete"""
         with open(self.conversation_path, 'w') as conv_file:
             conv_file.write(self.get_conversations_with_id())
@@ -205,9 +204,9 @@ class Cli(object):
             raise Exception('Failed to send message')
 
 
-    def quit(self):
+    async def quit(self):
         """Quit out of the cli"""
-        future = asyncio.async(self.client.disconnect())
+        future = await self.client.disconnect()
         future.add_done_callback(lambda future: future.result())
 
 class Message(object):
